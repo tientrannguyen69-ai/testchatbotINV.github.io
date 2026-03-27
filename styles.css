@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 1200px;
+  margin: auto;
+}
+
+.header {
+  background: #0b2c5a;
+  color: white;
+  padding: 15px 0;
+}
+
+.logo {
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar {
+  float: right;
+}
+
+.navbar a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+.hero {
+  height: 500px;
+  background: url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40")
+    no-repeat center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #f39c12;
+  color: white;
+  text-decoration: none;
+}
+
+.services {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.service-box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.card {
+  width: 23%;
+  padding: 20px;
+  background: #f4f4f4;
+}
+
+.about {
+  background: #eee;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.contact {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.contact input,
+.contact textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.footer {
+  background: #0b2c5a;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+}
