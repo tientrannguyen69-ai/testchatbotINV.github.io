@@ -339,94 +339,65 @@
       </div>
     </footer>
     <script>
+      // Configs
       let liveChatBaseUrl =
         document.location.protocol + "//" + "livechat.fpt.ai/v36/src";
       let LiveChatSocketUrl = "livechat.fpt.ai:443";
-      let FptAppCode = "a8101be62afb10e52694de5e88da327c";
-      let FptAppName = "Test_CHATBOT INVESTIP";
-
+      let FptAppCode = "56f99a85f4235daeedfb0e4cba9cc40e";
+      let FptAppName = "Official_CHATBOT INVESTIP";
+      // Define custom styles
       let CustomStyles = {
+        // header
         headerBackground:
           "linear-gradient(86.7deg, #3353a2ff 0.85%, #31b7b7ff 98.94%)",
         headerTextColor: "#ffffffff",
+        headerLogoEnable: false,
+        headerLogoLink:
+          "https://investip.vn/wp-content/uploads/2025/05/Logo-INVESTIP-VN-1.png",
+        headerText: "INVESTIP support",
+        // main
         primaryColor: "#6d9ccbff",
         secondaryColor: "#ecececff",
         primaryTextColor: "#ffffffff",
         secondaryTextColor: "#000000DE",
         buttonColor: "#b4b4b4ff",
         buttonTextColor: "#ffffffff",
-        avatarBot: "https://chatbot-tools.fpt.ai/livechat-builder/img/bot.png",
-        sendMessagePlaceholder: "Nhập tin nhắn",
-        floatButtonTooltip: "FPT.AI xin chào",
+        bodyBackgroundEnable: false,
+        bodyBackgroundLink: "",
+        avatarBot:
+          "https://investip.vn/wp-content/uploads/2025/05/Logo-INVESTIP-VN-1.png",
+        sendMessagePlaceholder: "Nhập tin nhắn ở đây",
+        // float button
+        floatButtonLogo:
+          "https://investip.vn/wp-content/uploads/2025/05/Logo-INVESTIP-VN-1.png",
+        floatButtonTooltip: "INVESTIP có thể hỗ trợ gì?",
+        floatButtonTooltipEnable: true,
+
+        // Start screen
+        customerWelcomeText: "Xin chào! Nhấn bắt đầu để chat",
+        customerButtonText: "Bắt đầu",
       };
 
       let FptLiveChatConfigs = {
         appName: FptAppName,
         appCode: FptAppCode,
-        themes: "",
         styles: CustomStyles,
+
+        anomyousSender: true, // không auto vào chat
       };
 
-      let isChatOpen = false;
-
-      // Load script
+      // Append Script
       let FptLiveChatScript = document.createElement("script");
       FptLiveChatScript.src = liveChatBaseUrl + "/static/fptai-livechat.js";
       document.body.appendChild(FptLiveChatScript);
 
-      // Load CSS
+      // Append Stylesheet
       let FptLiveChatStyles = document.createElement("link");
       FptLiveChatStyles.rel = "stylesheet";
       FptLiveChatStyles.href = liveChatBaseUrl + "/static/fptai-livechat.css";
       document.body.appendChild(FptLiveChatStyles);
 
-      // CSS animation + tooltip + responsive
-      let style = document.createElement("style");
-      style.innerHTML = `
-@keyframes shake {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-4px, 0) rotate(-10deg); }
-  50% { transform: translate(4px, 0) rotate(10deg); }
-  75% { transform: translate(-4px, 0) rotate(-10deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-.shake { animation: shake 0.5s; }
-
-.chat-tooltip {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  background: #0b2c5a;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  display: none;
-}
-
-/* Responsive chatbot */
-#fpt_ai_livechat_container {
-  transform-origin: bottom right;
-}
-@media (max-width: 1200px) {
-  #fpt_ai_livechat_container { transform: scale(0.9); }
-}
-@media (max-width: 992px) {
-  #fpt_ai_livechat_container { transform: scale(0.8); }
-}
-@media (max-width: 768px) {
-  #fpt_ai_livechat_container { transform: scale(0.7); }
-}
-`;
-      document.head.appendChild(style);
-
-      // Tooltip
-      let tooltip = document.createElement("div");
-      tooltip.className = "chat-tooltip";
-      tooltip.innerText = "Bạn cần hỗ trợ không?";
-      document.body.appendChild(tooltip);
-
-      // Init chatbot
+      // Init
       FptLiveChatScript.onload = function () {
         fpt_ai_render_chatbox(
           FptLiveChatConfigs,
@@ -434,38 +405,42 @@
           LiveChatSocketUrl
         );
 
-        // ✅ Mỗi lần vào web → auto open sau 4s
-        setTimeout(() => {
-          let chatBtn = document.querySelector("#fpt_ai_livechat_button");
-          if (chatBtn) {
-            chatBtn.click();
-            isChatOpen = true;
-          }
+        // 1. Tự mở chat sau 2s
+        setTimeout(function () {
+          fpt_ai_livechat_button_click();
         }, 2000);
 
-        // Detect open/close chat
-        document.addEventListener("click", function (e) {
-          if (e.target.closest("#fpt_ai_livechat_button")) {
-            isChatOpen = !isChatOpen;
-            if (isChatOpen) tooltip.style.display = "none";
-          }
-        });
-
-        // Rung + tooltip khi chat đóng
-        setInterval(() => {
-          if (!isChatOpen) {
-            let chatBtn = document.querySelector("#fpt_ai_livechat_button");
-            if (chatBtn) {
-              chatBtn.classList.add("shake");
-              tooltip.style.display = "block";
-              setTimeout(() => {
-                chatBtn.classList.remove("shake");
-                tooltip.style.display = "none";
-              }, 2000);
+        // 2. Float button rung khi tắt chat
+        setInterval(function () {
+          let chatBox = document.getElementById(
+            "fpt_ai_livechat_display_container"
+          );
+          if (chatBox && chatBox.style.display === "none") {
+            let btn = document.getElementById("fpt_ai_livechat_button");
+            if (btn) {
+              btn.classList.add("shake");
+              setTimeout(() => btn.classList.remove("shake"), 1000);
             }
           }
         }, 4000);
       };
+
+      // CSS rung
+      let style = document.createElement("style");
+      style.innerHTML = `
+      @keyframes shake {
+        0% { transform: rotate(0deg); }
+    20% { transform: rotate(-15deg); }
+    40% { transform: rotate(15deg); }
+    60% { transform: rotate(-10deg); }
+    80% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+      }
+      .shake {
+          animation: shake 0.8s;
+      }
+      `;
+      document.head.appendChild(style);
     </script>
   </body>
 </html>
